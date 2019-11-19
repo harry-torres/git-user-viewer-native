@@ -74,8 +74,32 @@ export const Author = styled.Text`
   margin-top: 2px;
 `;
 
-export const Loading = styled.View`
+// export const Loading = styled.View`
+//   flex: 1;
+//   align-items: center;
+//   justify-content: center;
+// `;
+
+export const Loading = styled.ActivityIndicator.attrs({
+  color: '#7159c1',
+})`
   flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Footer = styled.View`
   align-items: center;
   justify-content: center;
+  padding-top: 20px;
+  margin-bottom: 20px;
+  border-bottom-width: 1px;
+  border-color: #eee;
+`;
+
+export const Empty = styled.Text`
+  font-size: 20px;
+  color: #999;
+  font-weight: bold;
+  text-align: center;
 `;
