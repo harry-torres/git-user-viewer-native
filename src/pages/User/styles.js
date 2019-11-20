@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
@@ -40,7 +41,15 @@ export const Stars = styled.FlatList.attrs({
   margin-top: 20px;
 `;
 
-export const Starred = styled.View`
+export const OwnerAvatar = styled.Image`
+  width: 42px;
+  height: 42px;
+  border-radius: 21px;
+  background: #eee;
+`;
+
+export const WebviewButton = styled(RectButton)`
+  align-self: stretch; /** ocuppy full width */
   background: #f5f5f5;
   border-radius: 4px;
   padding: 10px 15px;
@@ -49,16 +58,15 @@ export const Starred = styled.View`
   align-items: center;
 `;
 
-export const OwnerAvatar = styled.Image`
-  width: 42px;
-  height: 42px;
-  border-radius: 21px;
-  background: #eee;
-`;
-
 export const Info = styled.View`
   margin-left: 10px;
+`;
+
+export const ButtonContent = styled.View`
   flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 export const Title = styled.Text.attrs({
@@ -70,17 +78,10 @@ export const Title = styled.Text.attrs({
 
 export const Author = styled.Text`
   font-size: 13px;
-  color: #665;
   margin-top: 2px;
 `;
 
-// export const Loading = styled.View`
-//   flex: 1;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-export const Loading = styled.ActivityIndicator.attrs({
+export const LoadingIcon = styled.ActivityIndicator.attrs({
   color: '#7159c1',
 })`
   flex: 1;

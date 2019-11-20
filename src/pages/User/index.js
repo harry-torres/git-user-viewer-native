@@ -7,14 +7,15 @@ import {
   Name,
   Bio,
   Stars,
-  Starred,
   OwnerAvatar,
   Info,
   Title,
   Author,
-  Loading,
   Footer,
   Empty,
+  LoadingIcon,
+  WebviewButton,
+  ButtonContent,
 } from './styles';
 import api from '../../services/api';
 import parseLinkHeader from '../../utils/parseLinkHeader';
@@ -27,6 +28,7 @@ export default class User extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       getParam: PropTypes.func,
+      navigate: PropTypes.func,
     }).isRequired,
   };
 
@@ -45,18 +47,9 @@ export default class User extends Component {
     this.setState({ refreshing: true, stars: [], next: 1 }, this.loadStarred);
   };
 
-  // refreshList = async () => {
-  //   await this.setState({
-  //     // loading: true,
-  //     stars: [],
-  //     next: 1,
-  // });
-  // await this.loadStarred();
-  // };
-
   renderFooter = () => {
     const { next } = this.state;
-    return next ? <Loading size={30} /> : <Footer />;
+    return next ? <LoadingIcon size={30} /> : <Footer />;
   };
 
   listEmpty = () => {
@@ -70,7 +63,6 @@ export default class User extends Component {
     const user = navigation.getParam('user');
 
     if (!next) {
-      console.tron.log('EOF');
       return;
     }
 
@@ -79,7 +71,6 @@ export default class User extends Component {
     const response = await api.get(page);
     const { link } = response.headers;
     const nextPage = link ? parseLinkHeader(link).next : 0;
-    console.tron.log(nextPage);
 
     this.setState({
       stars: [...stars, ...response.data],
@@ -87,6 +78,11 @@ export default class User extends Component {
       refreshing: false,
       next: nextPage,
     });
+  };
+
+  handleNavigate = page => {
+    const { navigation } = this.props;
+    navigation.navigate('Webview', { page });
   };
 
   render() {
@@ -101,7 +97,7 @@ export default class User extends Component {
           <Bio>{user.bio}</Bio>
         </Header>
         {loading ? (
-          <Loading size={50} />
+          <LoadingIcon size={50} />
         ) : (
           <Stars
             data={stars}
@@ -113,13 +109,15 @@ export default class User extends Component {
             refreshing={refreshing}
             ListEmptyComponent={this.listEmpty}
             renderItem={({ item }) => (
-              <Starred>
-                <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
-                <Info>
-                  <Title>{item.name}</Title>
-                  <Author>{item.owner.login}</Author>
-                </Info>
-              </Starred>
+              <WebviewButton onPress={() => this.handleNavigate(item.html_url)}>
+                <ButtonContent accessible>
+                  <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
+                  <Info>
+                    <Title>{item.name}</Title>
+                    <Author>{item.owner.login}</Author>
+                  </Info>
+                </ButtonContent>
+              </WebviewButton>
             )}
           />
         )}
